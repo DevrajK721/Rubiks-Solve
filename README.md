@@ -47,6 +47,42 @@ them back after all original colours have been read. `2 - i` reverses the
 order of a three-sticker strip. Prime moves repeat a quarter turn three
 times, and half turns repeat it twice.
 
+## Validating a cube
+
+Include `rubiks/CubeValidation.hpp` and call:
+
+```cpp
+std::string error = rubiks::validateCube(cube);
+bool possible = error.empty();
+```
+
+An empty string means the state is possible. Otherwise, the string explains
+the first problem found, for example `An odd number of edges are flipped.`
+The function does not change the cube. Validation is an explicit check;
+constructing a `Cube` does not automatically validate it.
+
+The implementation in `src/CubeValidation.cpp` checks:
+
+1. Every sticker has a known colour, with exactly nine of each colour.
+2. The six centres have different colours.
+3. All twelve edges and eight corners occur exactly once, with possible
+   colour combinations. A mirrored corner is rejected too.
+4. Edge flips balance: their total is even.
+5. Corner twists balance: their total is divisible by three.
+6. Edge and corner permutations have the same parity. For example, swapping
+   just two edges is impossible, but swapping two edges and two corners is
+   possible.
+
+The centre colours define the solved target. No fixed colour scheme is
+imposed: white does not have to be on top, and the validator does not enforce
+a manufacturer's opposite-colour pairs. A consistent alternative scheme is
+accepted. Interpreting pieces relative to the current centres also lets
+validation work after `M` moves and whole-cube rotations.
+
+The piece-orientation and parity rules are described in Herbert Kociemba's
+[cubie explanation](https://www.kociemba.org/math/cubielevel.htm) and
+[coordinate explanation](https://www.kociemba.org/math/coordlevel.htm).
+
 ## Building and testing
 
 From the project directory, configure once with GNU GCC:
@@ -67,3 +103,9 @@ and compare against independently derived expected destinations. They also
 check inverse moves, repeated turns, and undoing a mixed sequence. The marker
 fixtures intentionally isolate individual stickers; they do not represent
 physically solvable cubes.
+
+The validation tests cover incorrect counts and centres, missing/repeated or
+mirrored pieces, single edge flips, corner twists, mismatched permutations,
+and valid combinations of flips, twists, and swaps. They also check every
+supported move and 4,000 legal scramble prefixes, and verify that validation
+leaves its input unchanged.

@@ -21,6 +21,14 @@ add_executable(move_tests
     test/MoveTests.cpp
 )
 
+add_executable(validation_tests
+    src/Face.cpp
+    src/Cube.cpp
+    src/Moves.cpp
+    src/CubeValidation.cpp
+    test/ValidationTests.cpp
+)
+
 # -- Main Usage --
 
 # -- Compiler Setup --
@@ -30,8 +38,11 @@ target_include_directories(cube_tests PRIVATE include)
 target_compile_features(cube_tests PRIVATE cxx_std_17)
 target_include_directories(move_tests PRIVATE include)
 target_compile_features(move_tests PRIVATE cxx_std_17)
+target_include_directories(validation_tests PRIVATE include)
+target_compile_features(validation_tests PRIVATE cxx_std_17)
 
 enable_testing()
 add_test(NAME face_tests COMMAND face_tests)
 add_test(NAME cube_tests COMMAND cube_tests)
 add_test(NAME move_tests COMMAND move_tests)
+add_test(NAME validation_tests COMMAND validation_tests)
