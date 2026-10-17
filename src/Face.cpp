@@ -4,7 +4,7 @@ namespace rubiks {
     Face::Face(FaceColorArray colors) : colors(colors){}
 
     Color Face::getColor(int row, int col) const { // const does not allow function to change the face
-        return colors[row][col];
+        return colors.at(row).at(col);
     }
 
     FaceColorArray Face::getColors() const {

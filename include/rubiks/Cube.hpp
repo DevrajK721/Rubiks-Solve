@@ -14,6 +14,12 @@ namespace rubiks {
             Face getRightFace() const; // Returns the right face of the cube.
             Face getFrontFace() const; // Returns the front face of the cube.
             Face getBackFace() const; // Returns the back face of the cube.
+
+            Cube copy() const; // An independent copy of all 54 stickers.
+            bool isSolved() const; // A valid cube with six uniform faces.
+            // 54 colour letters, in U/D/L/R/F/B order, row by row.
+            // Whole-cube rotations are intentionally different keys.
+            std::string stateKey() const;
             
             void L(); // Rotate left face clockwise.
             void Lprime(); // Rotate left face counter-clockwise.

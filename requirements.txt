@@ -1,0 +1,2 @@
+# Binding version used for the documented development setup.
+pybind11==3.1.0
