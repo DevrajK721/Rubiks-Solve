@@ -249,4 +249,102 @@ namespace rubiks {
         M();
         M();
     }
+
+    void Cube::E() {
+        FaceColorArray newFront = front.getColors();
+        FaceColorArray newRight = right.getColors();
+        FaceColorArray newBack = back.getColors();
+        FaceColorArray newLeft = left.getColors();
+
+        // Transfer the middle rows in the same direction as D.
+        for (int col = 0; col < 3; ++col) {
+            newFront[1][col] = left.getColor(1, col);
+            newRight[1][col] = front.getColor(1, col);
+            newBack[1][col] = right.getColor(1, col);
+            newLeft[1][col] = back.getColor(1, col);
+        }
+
+        front.setColors(newFront);
+        right.setColors(newRight);
+        back.setColors(newBack);
+        left.setColors(newLeft);
+    }
+
+    void Cube::Eprime() {
+        E();
+        E();
+        E();
+    }
+
+    void Cube::E2() {
+        E();
+        E();
+    }
+
+    void Cube::S() {
+        FaceColorArray newUp = up.getColors();
+        FaceColorArray newRight = right.getColors();
+        FaceColorArray newDown = down.getColors();
+        FaceColorArray newLeft = left.getColors();
+
+        for (int i = 0; i < 3; ++i) {
+            newUp[1][i] = left.getColor(2 - i, 1);
+            newRight[i][1] = up.getColor(1, i);
+            newDown[1][i] = right.getColor(2 - i, 1);
+            newLeft[i][1] = down.getColor(1, i);
+        }
+
+        up.setColors(newUp);
+        right.setColors(newRight);
+        down.setColors(newDown);
+        left.setColors(newLeft);
+    }
+
+    void Cube::Sprime() {
+        S();
+        S();
+        S();
+    }
+
+    void Cube::S2() {
+        S();
+        S();
+    }
+
+    void Cube::rotateWholeRight() {
+        // the old front becomes the new right 
+        Face oldFront = front; 
+
+        front = left; 
+        left = back; 
+        back = right; 
+        right = oldFront; 
+
+        // the top and bottom stay in place, but their grids rotate 
+        // Top: anticlockwise 
+        rotateFaceClockwise(up);
+        rotateFaceClockwise(up);
+        rotateFaceClockwise(up);
+
+        // Bottom: clockwise 
+        rotateFaceClockwise(down);
+    }
+
+    void Cube::rotateWholeLeft() {
+        rotateWholeRight();
+        rotateWholeRight();
+        rotateWholeRight();
+    }
+
+    void Cube::rotateWholeUp() {
+        R();
+        Mprime();
+        Lprime();
+    }
+
+    void Cube::rotateWholeDown() {
+        Rprime();
+        M();
+        L();
+    }
 }

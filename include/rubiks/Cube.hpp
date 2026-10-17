@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "rubiks/Face.hpp"
+#include <string>
 
 namespace rubiks {
     class Cube {
@@ -35,6 +36,22 @@ namespace rubiks {
             void M(); // Turn the middle slice in the same direction as L.
             void Mprime(); // Turn the middle slice in the opposite direction to L.
             void M2(); // Rotate middle layer 180 degrees.
+            void E(); // Turn the middle slice in the same direction as D.
+            void Eprime(); // Turn the middle slice in the opposite direction to D.
+            void E2(); // Rotate middle layer 180 degrees.
+            void S(); // Turn the middle slice in the same direction as F.
+            void Sprime(); // Turn the middle slice in the opposite direction to F.
+            void S2(); // Rotate middle layer 180 degrees.
+
+            void rotateWholeRight(); // Rotate the entire cube to the right.
+            void rotateWholeLeft(); // Rotate the entire cube to the left.
+            void rotateWholeUp(); // Rotate the entire cube upwards.
+            void rotateWholeDown(); // Rotate the entire cube downwards.
+
+            // Apply random outer-face moves to the current state and return
+            // their notation. A seed makes a scramble repeatable.
+            std::string scramble(int moveCount = 25);
+            std::string scramble(int moveCount, unsigned int seed);
 
         private:
             Face up; 

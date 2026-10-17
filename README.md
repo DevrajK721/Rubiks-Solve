@@ -47,6 +47,34 @@ them back after all original colours have been read. `2 - i` reverses the
 order of a three-sticker strip. Prime moves repeat a quarter turn three
 times, and half turns repeat it twice.
 
+## Scrambling a cube
+
+Press **Space** in the viewer to apply 25 random outer-face moves. The move
+sequence appears at the bottom of the window. Each press scrambles the current
+state further; it does not reset the cube.
+
+From C++, the function returns the moves it applies:
+
+```cpp
+std::string moves = cube.scramble();          // 25 moves, a fresh random seed.
+std::string moves = cube.scramble(20);        // Choose a move count instead.
+std::string moves = cube.scramble(25, 12345); // Fixed seed for an experiment.
+```
+
+These are alternative calls. The implementation is in `src/Scramble.cpp`.
+It chooses one of L, R, U, D, F, B, then one, two, or three quarter turns.
+The returned notation uses an apostrophe for three turns, such as `R'`, and
+`2` for two turns, such as `U2`. Consecutive moves never use the same face.
+
+The same seed reproduces the sequence on the same build. To reproduce the
+resulting state, also start with the same cube state and orientation. Zero
+moves leaves the state unchanged and returns an empty string. Negative counts
+throw `std::invalid_argument` before changing the cube.
+
+This generates random move sequences; it does not sample uniformly from all
+possible cube states. It is suitable for exercising moves and starting simple
+experiments. Save the returned sequence when you need to reproduce a run.
+
 ## Validating a cube
 
 Include `rubiks/CubeValidation.hpp` and call:
